@@ -1,0 +1,11 @@
+#
+# .swagger-codegen-ignore
+#
+# Specific files to *not* generate using swagger-codegen.
+#
+
+#
+# Don't generate some of the random support files.
+#
+pom.xml
+README.md
