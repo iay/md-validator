@@ -68,7 +68,6 @@
       -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.2</version>
         <executions>
           <execution>
             <id>copy-resources</id>
@@ -139,6 +138,36 @@
       </plugin>
 
     </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+         <groupId>org.eclipse.m2e</groupId>
+         <artifactId>lifecycle-mapping</artifactId>
+         <version>1.0.0</version>
+         <configuration>
+           <lifecycleMappingMetadata>
+             <pluginExecutions>
+               <pluginExecution>
+                 <pluginExecutionFilter>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-codegen-maven-plugin</artifactId>
+                    <versionRange>[2.3.1,)</versionRange>
+                   <goals>
+                     <goal>generate</goal>
+                   </goals>
+                 </pluginExecutionFilter>
+                 <action>
+                   <execute/>
+                 </action>
+               </pluginExecution>
+             </pluginExecutions>
+           </lifecycleMappingMetadata>
+         </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
   </build>
 
   <profiles>
