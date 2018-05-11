@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.ApiParam;
+import uk.org.iay.incommon.validator.context.ValidatorCollection;
 import uk.org.iay.incommon.validator.models.Status;
 import uk.org.iay.incommon.validator.models.Status.StatusEnum;
 import uk.org.iay.incommon.validator.models.Validator;
@@ -43,6 +44,9 @@ public class ValidatorsApiController implements ValidatorsApi {
     /** Class logger. */
     private static final Logger LOG = LoggerFactory.getLogger(ValidatorsApiController.class);
 
+    /** Collection of all validators known to us. */
+    private final ValidatorCollection validatorCollection;
+
     /** Current {@link HttpServletRequest}. */
     private final HttpServletRequest request;
 
@@ -50,10 +54,12 @@ public class ValidatorsApiController implements ValidatorsApi {
      * Constructor.
      *
      * @param req current {@link HttpServletRequest}.
+     * @param valc {@link ValidatorCollection}
      */
     @Autowired
-    public ValidatorsApiController(final HttpServletRequest req) {
+    public ValidatorsApiController(final HttpServletRequest req, final ValidatorCollection valc) {
         request = req;
+        validatorCollection = valc;
     }
 
     /**
@@ -73,11 +79,13 @@ public class ValidatorsApiController implements ValidatorsApi {
     @Override
     public ResponseEntity<List<Validator>> getValidators() {
         final String accept = request.getHeader("Accept");
+        LOG.info("accept {}", accept);
         if (accept != null && accept.contains("application/json")) {
             final List<Validator> validators = new ArrayList<>();
-            validators.add(makeValidator("default", "default validation pipeline"));
-            validators.add(makeValidator("eduGAIN", "eduGAIN validation pipeline"));
-            return new ResponseEntity<List<Validator>>(validators, HttpStatus.NOT_IMPLEMENTED);
+            for (final ValidatorCollection.Entry entry : validatorCollection.getEntries()) {
+                validators.add(makeValidator(entry.getId(), entry.getDescription()));
+            }
+            return new ResponseEntity<List<Validator>>(validators, HttpStatus.OK);
         }
 
         return new ResponseEntity<List<Validator>>(HttpStatus.NOT_IMPLEMENTED);
