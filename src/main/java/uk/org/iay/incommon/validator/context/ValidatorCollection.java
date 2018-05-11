@@ -114,7 +114,7 @@ public class ValidatorCollection {
         ctx.setParent(parentContext);
         ctx.setDisplayName(configLocation);
         ctx.refresh();
-        LOG.info("refreshed {} has {} beans", configLocation, ctx.getBeanDefinitionCount());
+        LOG.info("context {} has {} bean definitions", configLocation, ctx.getBeanDefinitionCount());
         final Entry entry = new Entry(ctx);
         entries.add(entry);
         byId.put(entry.getId(), entry);

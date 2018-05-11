@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import uk.org.iay.incommon.validator.context.ValidatorCollection;
 
@@ -37,6 +38,10 @@ public class ValidatorConfiguration {
     @Value("${validator.configurations}")
     private String configurations;
 
+    /** Property value telling us where the common configuration lives. */
+    @Value("${validator.common}")
+    private String commonConfiguration;
+
     /**
      * Build the validator configuration collection.
      *
@@ -45,7 +50,17 @@ public class ValidatorConfiguration {
      */
     @Bean
     public ValidatorCollection validatorCollection(final ApplicationContext webContext) {
-        final ValidatorCollection c = new ValidatorCollection(webContext);
+        // Build the common configuration.
+        LOG.info("loading common configuration from {}", commonConfiguration);
+        final ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext();
+        ctx.setConfigLocation(commonConfiguration);
+        ctx.setParent(webContext);
+        ctx.setDisplayName(commonConfiguration);
+        ctx.refresh();
+        LOG.info("common configuration has {} bean definitions", ctx.getBeanDefinitionCount());
+
+        // Build the individual validators, with the common configuration as a parent.
+        final ValidatorCollection c = new ValidatorCollection(ctx);
         LOG.info("loading validator configurations: '{}'", configurations);
         for (final String configLocation : configurations.split("\\s+")) {
             c.add(configLocation);
