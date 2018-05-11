@@ -1,7 +1,20 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package uk.org.iay.incommon.validator.api;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,69 +22,96 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.annotations.ApiParam;
 import uk.org.iay.incommon.validator.models.Status;
+import uk.org.iay.incommon.validator.models.Status.StatusEnum;
 import uk.org.iay.incommon.validator.models.Validator;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen",
-        date = "2018-05-11T08:14:22.184+01:00")
-
+/**
+ * Controller for the Validators API.
+ */
 @Controller
 public class ValidatorsApiController implements ValidatorsApi {
 
-    private static final Logger log = LoggerFactory.getLogger(ValidatorsApiController.class);
+    /** Class logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(ValidatorsApiController.class);
 
-    private final ObjectMapper objectMapper;
-
+    /** Current {@link HttpServletRequest}. */
     private final HttpServletRequest request;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public ValidatorsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    /**
+     * Constructor.
+     *
+     * @param req current {@link HttpServletRequest}.
+     */
+    @Autowired
+    public ValidatorsApiController(final HttpServletRequest req) {
+        request = req;
     }
 
+    /**
+     * Make a {@link Validator} from an identifier and description.
+     *
+     * @param id identifier for the validator
+     * @param description description of the validator
+     * @return a {@link Validator}
+     */
+    private Validator makeValidator(final String id, final String description) {
+        final Validator v = new Validator();
+        v.setValidatorId(id);
+        v.setDescription(description);
+        return v;
+    }
+
+    @Override
     public ResponseEntity<List<Validator>> getValidators() {
-        String accept = request.getHeader("Accept");
+        final String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Validator>>(objectMapper.readValue(
-                        "[ {  \"validator_id\" : \"eduGAIN\",  \"description\" : \"validation ruleset for entities from eduGAIN\"}, {  \"validator_id\" : \"eduGAIN\",  \"description\" : \"validation ruleset for entities from eduGAIN\"} ]",
-                        List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Validator>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            final List<Validator> validators = new ArrayList<>();
+            validators.add(makeValidator("default", "default validation pipeline"));
+            validators.add(makeValidator("eduGAIN", "eduGAIN validation pipeline"));
+            return new ResponseEntity<List<Validator>>(validators, HttpStatus.NOT_IMPLEMENTED);
         }
 
         return new ResponseEntity<List<Validator>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * Make a {@link Status} from its components.
+     *
+     * @param status a {@link StatusEnum} indicating the kind of status
+     * @param componentId identifier for the generating component
+     * @param message message associated with the status
+     * @return a {@link Status}
+     */
+    private Status makeStatus(final StatusEnum status, final String componentId, final String message) {
+        final Status s = new Status();
+        s.setStatus(status);
+        return s;
+    }
+
+    @Override
     public ResponseEntity<List<Status>> validate(
-            @ApiParam(value = "An identifier for the validation to be performed. ",
-                    required = true) @PathVariable("validator_id") String validatorId,
-            @ApiParam(value = "The metadata to be validated.", required = true) @Valid @RequestBody String metadata) {
-        String accept = request.getHeader("Accept");
+            @ApiParam(value = "An identifier for the validation to be performed.", required = true)
+                @PathVariable("validator_id")
+                final String validatorId,
+            @ApiParam(value = "The metadata to be validated.", required = true) @Valid @RequestBody
+                final String metadata) {
+        final String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Status>>(objectMapper.readValue(
-                        "[ {  \"status\" : \"error\",  \"componentId\" : \"checkSchemas\",  \"message\" : \"the entityID doesn't have the correct format\"}, {  \"status\" : \"error\",  \"componentId\" : \"checkSchemas\",  \"message\" : \"the entityID doesn't have the correct format\"} ]",
-                        List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Status>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            final List<Status> statuses = new ArrayList<>();
+            statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
+            statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
+            return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
         }
 
         return new ResponseEntity<List<Status>>(HttpStatus.NOT_IMPLEMENTED);
     }
-
 }
