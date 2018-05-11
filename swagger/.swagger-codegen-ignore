@@ -9,3 +9,8 @@
 #
 pom.xml
 README.md
+
+#
+# Don't generate dummy controllers once we have implemented them.
+#
+**/ValidatorsApiController.java
