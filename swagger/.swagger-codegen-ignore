@@ -9,6 +9,7 @@
 #
 pom.xml
 README.md
+**/application.properties
 
 #
 # Don't generate dummy controllers once we have implemented them.
