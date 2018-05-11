@@ -11,9 +11,16 @@
 
     <groupId>uk.org.iay.incommon.validator</groupId>
     <artifactId>inc-validator</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
+
+    <name>Metadata Validation Micro-Service</name>
+    <description>
+        An metadata validation micro-service, implemented using
+        Spring Boot and the Shibboleth metadata aggregator framework.
+    </description>
+    <inceptionYear>2018</inceptionYear>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -120,6 +127,10 @@
                 </executions>
             </plugin>
 
+            <!--
+                Ask Spring Boot to enhance the resulting .jar so that it is
+                directly executable.
+            -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -184,5 +195,14 @@
             </build>
         </profile>
     </profiles>
+
+    <developers>
+        <developer>
+            <id>iay</id>
+            <name>Ian Young</name>
+            <organizationUrl>https://iay.org.uk/</organizationUrl>
+            <timezone>0</timezone>
+        </developer>
+    </developers>
 
 </project>
