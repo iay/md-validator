@@ -62,20 +62,6 @@ public class ValidatorsApiController implements ValidatorsApi {
         validatorCollection = valc;
     }
 
-    /**
-     * Make a {@link Validator} from an identifier and description.
-     *
-     * @param id identifier for the validator
-     * @param description description of the validator
-     * @return a {@link Validator}
-     */
-    private Validator makeValidator(final String id, final String description) {
-        final Validator v = new Validator();
-        v.setValidatorId(id);
-        v.setDescription(description);
-        return v;
-    }
-
     @Override
     public ResponseEntity<List<Validator>> getValidators() {
         final String accept = request.getHeader("Accept");
@@ -83,7 +69,10 @@ public class ValidatorsApiController implements ValidatorsApi {
         if (accept != null && accept.contains("application/json")) {
             final List<Validator> validators = new ArrayList<>();
             for (final ValidatorCollection.Entry entry : validatorCollection.getEntries()) {
-                validators.add(makeValidator(entry.getId(), entry.getDescription()));
+                final Validator v = new Validator();
+                v.setValidatorId(entry.getId());
+                v.setDescription(entry.getDescription());
+                validators.add(v);
             }
             return new ResponseEntity<List<Validator>>(validators, HttpStatus.OK);
         }
