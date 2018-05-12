@@ -18,7 +18,7 @@ COPY src src
 
 RUN mvn --batch-mode \
     -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn \
-    clean package
+    package
 
 #
 # Build the deployable image.
