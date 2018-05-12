@@ -30,8 +30,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.w3c.dom.Element;
 
 import io.swagger.annotations.ApiParam;
+import net.shibboleth.metadata.Item;
+import net.shibboleth.metadata.pipeline.Pipeline;
+import net.shibboleth.metadata.pipeline.PipelineProcessingException;
 import uk.org.iay.incommon.validator.context.ValidatorCollection;
 import uk.org.iay.incommon.validator.models.Status;
 import uk.org.iay.incommon.validator.models.Status.StatusEnum;
@@ -68,7 +72,7 @@ public class ValidatorsApiController implements ValidatorsApi {
             v.setDescription(entry.getDescription());
             validators.add(v);
         }
-        return new ResponseEntity<List<Validator>>(validators, HttpStatus.OK);
+        return new ResponseEntity<>(validators, HttpStatus.OK);
     }
 
     /**
@@ -82,6 +86,8 @@ public class ValidatorsApiController implements ValidatorsApi {
     private Status makeStatus(final StatusEnum status, final String componentId, final String message) {
         final Status s = new Status();
         s.setStatus(status);
+        s.setComponentId(componentId);
+        s.setMessage(message);
         return s;
     }
 
@@ -99,10 +105,19 @@ public class ValidatorsApiController implements ValidatorsApi {
             throw new NotFoundException("unknown validator identifier '" + validatorId + "'");
         }
 
+        // Run the validator.
+        final List<Item<Element>> items = new ArrayList<>();
+        final Pipeline<Element> pipeline = entry.getPipeline();
+        try {
+            pipeline.execute(items);
+        } catch (final PipelineProcessingException e) {
+            e.printStackTrace();
+        }
+
         final List<Status> statuses = new ArrayList<>();
         statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
         statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
-        return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(statuses, HttpStatus.OK);
     }
 
     /**

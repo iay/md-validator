@@ -23,6 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.w3c.dom.Element;
+
+import net.shibboleth.metadata.pipeline.Pipeline;
 
 /**
  * Represents a collection of validators.
@@ -40,6 +43,9 @@ public class ValidatorCollection {
         /** Description for the validator. */
         private final String description;
 
+        /** Pipeline for the validator. */
+        private final Pipeline<Element> pipeline;
+
         /**
          * Constructor.
          *
@@ -48,6 +54,10 @@ public class ValidatorCollection {
         public Entry(final ApplicationContext ctx) {
             id = ctx.getBean("id", String.class);
             description = ctx.getBean("description", String.class);
+
+            @SuppressWarnings("unchecked")
+            final Pipeline<Element> pipe = ctx.getBean("pipeline", Pipeline.class);
+            pipeline = pipe;
         }
 
         /**
@@ -68,6 +78,14 @@ public class ValidatorCollection {
             return description;
         }
 
+        /**
+         * Gets the validator's pipeline.
+         *
+         * @return the validator's pipeline
+         */
+        public Pipeline<Element> getPipeline() {
+            return pipeline;
+        }
     }
 
     /** Class logger. */

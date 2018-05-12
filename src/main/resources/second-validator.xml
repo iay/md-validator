@@ -9,7 +9,13 @@
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="id" class="java.lang.String" c:_="second"/>
-    <bean id="description" class="java.lang.String" c:_="Second validator."/>
+    <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
+    <bean class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
+
+    <bean id="id" parent="String" c:_="second"/>
+    <bean id="description" parent="String" c:_="Second validator."/>
+
+    <bean id="pipeline" parent="mda.SimplePipeline">
+    </bean>
 
 </beans>
