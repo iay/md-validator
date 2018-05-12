@@ -16,7 +16,9 @@ package uk.org.iay.incommon.validator.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -88,10 +91,26 @@ public class ValidatorsApiController implements ValidatorsApi {
                 @PathVariable("validator_id")
                 final String validatorId,
             @ApiParam(value = "The metadata to be validated.", required = true) @Valid @RequestBody
-                final String metadata) {
+                final String metadata) throws ApiException {
         final List<Status> statuses = new ArrayList<>();
         statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
         statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
-        return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
+        //return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
+        throw new NotFoundException("bad validator identifier '" + validatorId + "'");
+    }
+
+    /**
+     * Handle an {@link ApiException} by converting it to a {@link Map}, which will
+     * in turn be converted to a JSON object.
+     *
+     * @param req the {@link HttpServletRequest} being handled
+     * @param ex the {@link ApiException} being handled
+     * @return a {@link ResponseEntity} equivalent to the {@link ApiException}
+     */
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<Map<String, Object>> handleApiException(final HttpServletRequest req, final ApiException ex) {
+        final Map<String, Object> m = ex.toMap();
+        m.put("path", req.getRequestURI());
+        return new ResponseEntity<>(m, ex.getStatus());
     }
 }

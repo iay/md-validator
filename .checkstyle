@@ -6,5 +6,6 @@
   </local-check-config>
   <fileset name="all" enabled="true" check-config-name="Shibboleth" local="true">
     <file-match-pattern match-pattern="^src/main/java/" include-pattern="true"/>
+    <file-match-pattern match-pattern="ValidatorsApi.java" include-pattern="false"/>
   </fileset>
 </fileset-config>

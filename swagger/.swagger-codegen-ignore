@@ -15,3 +15,14 @@ README.md
 # Don't generate dummy controllers once we have implemented them.
 #
 **/ValidatorsApiController.java
+
+#
+# Turns out we need to make changes to the API classes as well, to
+# allow for exceptions.
+#
+**/ValidatorsApi.java
+
+#
+# In turn, that means we don't need to generate the exception classes.
+#
+**/*Exception.java
