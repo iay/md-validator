@@ -1,0 +1,142 @@
+swagger: '2.0'
+info:
+  description: API for the metadata validation service.
+  version: 1.0.0
+  title: Metadata Validation API
+
+  contact:
+    email: ian@iay.org.uk
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+- name: validation
+  description: Metadata validation operations
+
+schemes:
+- http
+
+paths:
+  "/validators":
+    get:
+      tags:
+      - validation
+      summary: lists available validators
+      operationId: getValidators
+      description: |
+        Lists all of the available validator pipelines.
+
+      produces:
+      - application/json
+
+      responses:
+        200:
+          description: list of validator identifiers and descriptions
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Validator"
+
+  "/validators/{validator_id}/validate":
+    post:
+      tags:
+      - validation
+      summary: performs a validation
+      operationId: validate
+
+      parameters:
+
+      - name: validator_id
+        in: path
+        description: |
+          An identifier for the validation to be performed.
+        required: true
+        type: string
+
+      - name: metadata
+        in: body
+        description: The metadata to be validated.
+        required: true
+        schema:
+          type: string
+          example: |
+            <md:EntityDescriptor>
+               ...
+            </md:EntityDescriptor>
+
+      produces:
+      - application/json
+
+      consumes:
+      - application/xml+samlmetadata
+
+      responses:
+        200:
+          description: |
+            The result of a validation operation is a (possibly empty) array of `Status` objects derived from the `StatusMetadata` instances attached to the item being validated.
+
+            These may include errors, and it is up to the client to determine what constitues a "pass" or "fail".
+
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Status"
+
+        404:
+          description: not found
+          schema:
+            type: object
+            required:
+            - foo
+            - bar
+            properties:
+              foo:
+                type: string
+              bar:
+                type: string
+
+definitions:
+
+  Validator:
+    type: object
+    required:
+    - validator_id
+    - description
+    properties:
+      validator_id:
+        type: string
+      description:
+        type: string
+    example:
+      validator_id: eduGAIN
+      description: validation ruleset for entities from eduGAIN
+
+  Status:
+    type: object
+    required:
+    - status
+    - componentId
+    - message
+    properties:
+      status:
+        type: string
+        description: the subclass of `StatusMetadata`
+        enum:
+        - info
+        - warning
+        - error
+
+      componentId:
+        type: string
+        description: |
+          the component identifier (bean ID) of the component that created the `StatusMetadata` object
+
+      message:
+        type: string
+
+    example:
+      status: error
+      componentId: checkSchemas
+      message: "the entityID doesn't have the correct format"

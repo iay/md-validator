@@ -24,7 +24,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spec.url>https://api.swaggerhub.com/apis/iay/inc-validator/1.0.0</spec.url>
+        <spec.location>swagger/swagger.yaml</spec.location>
 
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -105,7 +105,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${spec.url}</inputSpec>
+                            <inputSpec>${spec.location}</inputSpec>
                             <language>spring</language>
 
                             <invokerPackage>uk.org.iay.incommon.validator</invokerPackage>
