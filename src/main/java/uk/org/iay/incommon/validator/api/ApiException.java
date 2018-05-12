@@ -47,7 +47,7 @@ public class ApiException extends Exception {
     }
 
     /**
-     * Reuturns the wrapped {@link HttpStatus} value.
+     * Returns the wrapped {@link HttpStatus} value.
      *
      * @return an {@link HttpStatus}
      */
