@@ -14,6 +14,7 @@
 
 package uk.org.iay.incommon.validator.api;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +31,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import io.swagger.annotations.ApiParam;
+import net.shibboleth.metadata.ErrorStatus;
+import net.shibboleth.metadata.InfoStatus;
 import net.shibboleth.metadata.Item;
+import net.shibboleth.metadata.StatusMetadata;
+import net.shibboleth.metadata.WarningStatus;
+import net.shibboleth.metadata.dom.DOMElementItem;
 import net.shibboleth.metadata.pipeline.Pipeline;
 import net.shibboleth.metadata.pipeline.PipelineProcessingException;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import uk.org.iay.incommon.validator.context.ValidatorCollection;
 import uk.org.iay.incommon.validator.models.Status;
 import uk.org.iay.incommon.validator.models.Status.StatusEnum;
@@ -53,14 +62,19 @@ public class ValidatorsApiController implements ValidatorsApi {
     /** Collection of all validators known to us. */
     private final ValidatorCollection validatorCollection;
 
+    /** Pool of XML parsers. */
+    private final ParserPool parserPool;
+
     /**
      * Constructor.
      *
      * @param valc {@link ValidatorCollection}
+     * @param pool {@link ParserPool}
      */
     @Autowired
-    public ValidatorsApiController(final ValidatorCollection valc) {
+    public ValidatorsApiController(final ValidatorCollection valc, final ParserPool pool) {
         validatorCollection = valc;
+        parserPool = pool;
     }
 
     @Override
@@ -76,18 +90,26 @@ public class ValidatorsApiController implements ValidatorsApi {
     }
 
     /**
-     * Make a {@link Status} from its components.
+     * Convert a {@link StatusMetadata} from a pipeline result into
+     * a {@link Status} for transmission to the client.
      *
-     * @param status a {@link StatusEnum} indicating the kind of status
-     * @param componentId identifier for the generating component
-     * @param message message associated with the status
-     * @return a {@link Status}
+     * @param stat the {@link StatusMetadata} to convert
+     * @return a converted {@link Status}
      */
-    private Status makeStatus(final StatusEnum status, final String componentId, final String message) {
+    private Status convertStatus(final StatusMetadata stat) {
         final Status s = new Status();
-        s.setStatus(status);
-        s.setComponentId(componentId);
-        s.setMessage(message);
+        s.setComponentId(stat.getComponentId());
+        s.setMessage(s.getMessage());
+        if (stat instanceof ErrorStatus) {
+            s.setStatus(StatusEnum.ERROR);
+        } else if (stat instanceof WarningStatus) {
+            s.setStatus(StatusEnum.WARNING);
+        } else if (stat instanceof InfoStatus) {
+            s.setStatus(StatusEnum.INFO);
+        } else {
+            LOG.error("unknown StatusMetadata subtype {}", stat.getClass().getName());
+            s.setStatus(StatusEnum.ERROR);
+        }
         return s;
     }
 
@@ -105,18 +127,35 @@ public class ValidatorsApiController implements ValidatorsApi {
             throw new NotFoundException("unknown validator identifier '" + validatorId + "'");
         }
 
-        // Run the validator.
+        // Parse the body to create an Item<Element>.
+        final Item<Element> item;
+        try {
+            final Document doc = parserPool.parse(new StringReader(metadata));
+            item = new DOMElementItem(doc);
+        } catch (final XMLParserException ex) {
+            LOG.info("XLMParserException: {}", ex);
+            throw new ApiException(HttpStatus.BAD_REQUEST, "XMLParserException: " + ex.getMessage());
+        }
+
+        // Form the item collection.
         final List<Item<Element>> items = new ArrayList<>();
+        items.add(item);
+
+        // Run the validator.
         final Pipeline<Element> pipeline = entry.getPipeline();
         try {
             pipeline.execute(items);
-        } catch (final PipelineProcessingException e) {
-            e.printStackTrace();
+        } catch (final PipelineProcessingException ex) {
+            LOG.info("Pipeline failed: {}", ex);
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Pipeline failed: " + ex.getMessage());
         }
 
+        // Build the response from any resulting statuses
+        final List<StatusMetadata> sts = item.getItemMetadata().get(StatusMetadata.class);
         final List<Status> statuses = new ArrayList<>();
-        statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
-        statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
+        for (final StatusMetadata st : sts) {
+            statuses.add(convertStatus(st));
+        }
         return new ResponseEntity<>(statuses, HttpStatus.OK);
     }
 
