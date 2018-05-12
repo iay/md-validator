@@ -92,11 +92,17 @@ public class ValidatorsApiController implements ValidatorsApi {
                 final String validatorId,
             @ApiParam(value = "The metadata to be validated.", required = true) @Valid @RequestBody
                 final String metadata) throws ApiException {
+
+        // Fetch the required validator.
+        final ValidatorCollection.Entry entry = validatorCollection.getEntry(validatorId);
+        if (entry == null) {
+            throw new NotFoundException("unknown validator identifier '" + validatorId + "'");
+        }
+
         final List<Status> statuses = new ArrayList<>();
         statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
         statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
-        //return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
-        throw new NotFoundException("bad validator identifier '" + validatorId + "'");
+        return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
     }
 
     /**

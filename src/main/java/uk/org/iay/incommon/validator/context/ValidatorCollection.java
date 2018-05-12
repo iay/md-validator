@@ -101,6 +101,16 @@ public class ValidatorCollection {
     }
 
     /**
+     * Get the {@link Entry} with the given identifier, if any.
+     *
+     * @param id the identifier for the required {@link Entry}
+     * @return the {@link Entry}, or <code>null</code>
+     */
+    public Entry getEntry(final String id) {
+        return byId.get(id);
+    }
+
+    /**
      * Build an {@link ApplicationContext} from the indicated configuration,
      * and add it to the collection.
      *
