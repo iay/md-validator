@@ -10,9 +10,11 @@ Built using:
 
 ## Spring Contexts
 
-The root `ApplicationContext` in the application is the one provided by
-Spring Boot. This is primarily configured using Java annotations, but
-it would be possible to extend that with XML configuration if needed.
+The root `ApplicationContext` in the application is the one provided by Spring
+Boot. This is primarily configured using Java and annotations, but the
+classpath resource `root-beans.xml` is also loaded into this context. This
+provides some convenience when importing XML configuration from other uses of
+the Shibboleth component framework.
 
 The classpath resource `common-beans.xml` is used to configure a
 `ClassPathXmlApplicationContext` which takes the root context as its
