@@ -17,7 +17,6 @@ package uk.org.iay.incommon.validator.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -47,37 +46,26 @@ public class ValidatorsApiController implements ValidatorsApi {
     /** Collection of all validators known to us. */
     private final ValidatorCollection validatorCollection;
 
-    /** Current {@link HttpServletRequest}. */
-    private final HttpServletRequest request;
-
     /**
      * Constructor.
      *
-     * @param req current {@link HttpServletRequest}.
      * @param valc {@link ValidatorCollection}
      */
     @Autowired
-    public ValidatorsApiController(final HttpServletRequest req, final ValidatorCollection valc) {
-        request = req;
+    public ValidatorsApiController(final ValidatorCollection valc) {
         validatorCollection = valc;
     }
 
     @Override
     public ResponseEntity<List<Validator>> getValidators() {
-        final String accept = request.getHeader("Accept");
-        LOG.info("accept {}", accept);
-        if (accept != null && accept.contains("application/json")) {
-            final List<Validator> validators = new ArrayList<>();
-            for (final ValidatorCollection.Entry entry : validatorCollection.getEntries()) {
-                final Validator v = new Validator();
-                v.setValidatorId(entry.getId());
-                v.setDescription(entry.getDescription());
-                validators.add(v);
-            }
-            return new ResponseEntity<List<Validator>>(validators, HttpStatus.OK);
+        final List<Validator> validators = new ArrayList<>();
+        for (final ValidatorCollection.Entry entry : validatorCollection.getEntries()) {
+            final Validator v = new Validator();
+            v.setValidatorId(entry.getId());
+            v.setDescription(entry.getDescription());
+            validators.add(v);
         }
-
-        return new ResponseEntity<List<Validator>>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<List<Validator>>(validators, HttpStatus.OK);
     }
 
     /**
@@ -101,14 +89,9 @@ public class ValidatorsApiController implements ValidatorsApi {
                 final String validatorId,
             @ApiParam(value = "The metadata to be validated.", required = true) @Valid @RequestBody
                 final String metadata) {
-        final String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            final List<Status> statuses = new ArrayList<>();
-            statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
-            statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
-            return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
-        }
-
-        return new ResponseEntity<List<Status>>(HttpStatus.NOT_IMPLEMENTED);
+        final List<Status> statuses = new ArrayList<>();
+        statuses.add(makeStatus(StatusEnum.ERROR, "component", "message"));
+        statuses.add(makeStatus(StatusEnum.WARNING, "component/sub", "another message"));
+        return new ResponseEntity<List<Status>>(statuses, HttpStatus.NOT_IMPLEMENTED);
     }
 }
