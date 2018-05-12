@@ -47,6 +47,19 @@ public class ApiException extends Exception {
     }
 
     /**
+     * Constructor.
+     *
+     * @param stat HTTP status
+     * @param msg message
+     * @param cause the {@link Throwable} that caused this exception
+     */
+    public ApiException(final HttpStatus stat, final String msg, final Throwable cause) {
+        super(msg, cause);
+        status = stat;
+        when = DateTime.now();
+    }
+
+    /**
      * Returns the wrapped {@link HttpStatus} value.
      *
      * @return an {@link HttpStatus}
@@ -68,6 +81,9 @@ public class ApiException extends Exception {
         m.put("message", getMessage());
         m.put("exception", getClass().getName());
         m.put("timestamp", when);
+        if (getCause() != null) {
+            m.put("cause", getCause().toString());
+        }
         return m;
     }
 }

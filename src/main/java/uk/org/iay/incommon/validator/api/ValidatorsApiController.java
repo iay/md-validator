@@ -133,8 +133,9 @@ public class ValidatorsApiController implements ValidatorsApi {
             final Document doc = parserPool.parse(new StringReader(metadata));
             item = new DOMElementItem(doc);
         } catch (final XMLParserException ex) {
-            LOG.info("XLMParserException: {}", ex);
-            throw new ApiException(HttpStatus.BAD_REQUEST, "XMLParserException: " + ex.getMessage());
+            LOG.info("XLMParserException: {}", ex.getMessage());
+            throw new ApiException(HttpStatus.BAD_REQUEST,
+                    "XMLParserException: " + ex.getMessage(), ex.getCause());
         }
 
         // Form the item collection.
@@ -146,8 +147,9 @@ public class ValidatorsApiController implements ValidatorsApi {
         try {
             pipeline.execute(items);
         } catch (final PipelineProcessingException ex) {
-            LOG.info("Pipeline failed: {}", ex);
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Pipeline failed: " + ex.getMessage());
+            LOG.info("Pipeline failed: {}", ex.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Pipeline failed: " + ex.getMessage(), ex.getCause());
         }
 
         // Build the response from any resulting statuses
