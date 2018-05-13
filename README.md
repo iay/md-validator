@@ -10,6 +10,10 @@ Built using:
 
 ## Spring Contexts
 
+The Spring application contexts in the application are arranged as follows:
+
+![Contexts](doc/contexts.png)
+
 The root `ApplicationContext` in the application is the one provided by Spring
 Boot. This is primarily configured using Java and annotations, but the
 classpath resource `root-beans.xml` is also loaded into this context. This
