@@ -37,4 +37,18 @@
     <bean id="String" abstract="true" class="java.lang.String"/>
     <bean id="QName" abstract="true" class="javax.xml.namespace.QName"/>
 
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   V A L I D A T I O N   B E A N S   ***
+        ***                                     ***
+        *******************************************
+    -->
+
+    <!--
+        check_bindings
+    -->
+    <bean id="check_bindings" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_bindings.xsl"/>
+
 </beans>

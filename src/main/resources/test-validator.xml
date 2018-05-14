@@ -16,6 +16,17 @@
     <bean id="description" parent="String" c:_="Test validator."/>
 
     <bean id="pipeline" parent="mda.SimplePipeline">
+        <property name="stages">
+            <list>
+                <ref bean="check_bindings"/>
+                <bean id="fake_warn" parent="mda.XSLValidationStage"
+                    p:XSLResource="classpath:test/test_warn.xsl"/>
+                <bean id="fake_info" parent="mda.XSLValidationStage"
+                    p:XSLResource="classpath:test/test_info.xsl"/>
+                <bean id="fake_warn_2" parent="mda.XSLValidationStage"
+                    p:XSLResource="classpath:test/test_warn.xsl"/>
+            </list>
+        </property>
     </bean>
 
 </beans>

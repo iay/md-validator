@@ -16,6 +16,11 @@
     <bean id="description" parent="String" c:_="Default validator."/>
 
     <bean id="pipeline" parent="mda.SimplePipeline">
+        <property name="stages">
+            <list>
+                <!-- nothing here -->
+            </list>
+        </property>
     </bean>
 
 </beans>
