@@ -99,7 +99,7 @@ public class ValidatorsApiController implements ValidatorsApi {
     private Status convertStatus(final StatusMetadata stat) {
         final Status s = new Status();
         s.setComponentId(stat.getComponentId());
-        s.setMessage(s.getMessage());
+        s.setMessage(stat.getStatusMessage());
         if (stat instanceof ErrorStatus) {
             s.setStatus(StatusEnum.ERROR);
         } else if (stat instanceof WarningStatus) {
