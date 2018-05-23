@@ -12,8 +12,8 @@
     <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
     <bean class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
 
-    <bean id="id" parent="String" c:_="second"/>
-    <bean id="description" parent="String" c:_="Second validator."/>
+    <bean id="id" parent="String" c:_="empty"/>
+    <bean id="description" parent="String" c:_="Empty validator pipeline."/>
 
     <bean id="pipeline" parent="mda.SimplePipeline">
         <property name="stages">
