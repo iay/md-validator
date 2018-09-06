@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -41,6 +42,7 @@ import net.shibboleth.metadata.Item;
 import net.shibboleth.metadata.StatusMetadata;
 import net.shibboleth.metadata.WarningStatus;
 import net.shibboleth.metadata.dom.DOMElementItem;
+import net.shibboleth.metadata.dom.saml.SAMLMetadataSupport;
 import net.shibboleth.metadata.pipeline.Pipeline;
 import net.shibboleth.metadata.pipeline.PipelineProcessingException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -138,6 +140,9 @@ public class ValidatorsApiController implements ValidatorsApi {
                     "XMLParserException: " + ex.getMessage(), ex.getCause());
         }
 
+        // Perform sanity checks
+        sanityCheckDocument(item);
+
         // Form the item collection.
         final List<Item<Element>> items = new ArrayList<>();
         items.add(item);
@@ -159,6 +164,44 @@ public class ValidatorsApiController implements ValidatorsApi {
             statuses.add(convertStatus(st));
         }
         return new ResponseEntity<>(statuses, HttpStatus.OK);
+    }
+
+    /**
+     * Perform basic sanity checks on a metadata document.
+     *
+     * This is intended to catch grossly malformed metadata before it is run through
+     * a pipeline.
+     *
+     * @param item the {@link Item} to sanity check
+     * @throws ApiException if the document isn't well formed
+     */
+    private void sanityCheckDocument(@Nonnull final Item<Element> item) throws ApiException {
+        // Check namespace
+        final Element docElement = item.unwrap();
+        final String namespace = docElement.getNamespaceURI();
+        if (namespace == null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST,
+                    "document root does not have a namespace");
+        }
+        if (!SAMLMetadataSupport.MD_NS.equals(namespace)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST,
+                    "document root has wrong namespace " + namespace);
+        }
+
+        // Check element name
+        if (!SAMLMetadataSupport.isEntityDescriptor(docElement)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST,
+                    "document element is not a SAML entity descriptor");
+        }
+
+        // Check that there is an entityID attribute
+        if (docElement.getAttributeNodeNS(null, "entityID") == null) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "entity has no entityID");
+        }
+        final String entityID = docElement.getAttributeNS(null, "entityID");
+        if (entityID.isEmpty()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "entity has empty entityID");
+        }
     }
 
     /**
