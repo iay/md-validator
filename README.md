@@ -1,4 +1,4 @@
-# `inc-validator`
+# Metadata Validator Web Service
 
 A micro-service to perform SAML metadata validation.
 
