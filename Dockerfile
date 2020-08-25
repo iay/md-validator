@@ -1,5 +1,5 @@
 #
-# Dockerfile for inc-validator.
+# Dockerfile for md-validator.
 #
 # Performed as a two-stage build so that we can use Maven to generate the application
 # but not have it (and the things it downloads) clutter up the deployed image.
@@ -30,4 +30,4 @@ WORKDIR /user
 COPY --from=build-jar /user/target/*.jar .
 
 EXPOSE 8080
-CMD ["java", "-jar", "inc-validator-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "md-validator-0.0.1-SNAPSHOT.jar"]

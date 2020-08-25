@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package uk.org.iay.incommon.validator.api;
+package uk.org.iay.md.validator.api;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -12,7 +12,25 @@
  * limitations under the License.
  */
 
+package uk.org.iay.md.validator.api;
+
+import org.springframework.http.HttpStatus;
+
 /**
- * API classes for the metadata validator service.
+ * {@link ApiException} representing a "not found" condition.
  */
-package uk.org.iay.incommon.validator.api;
+public class NotFoundException extends ApiException {
+
+    /** Serial version UID. */
+    private static final long serialVersionUID = 424520235843161978L;
+
+    /**
+     * Constructor.
+     *
+     * @param msg message to be included in the exception
+     */
+    public NotFoundException(final String msg) {
+        super(HttpStatus.NOT_FOUND, msg);
+    }
+
+}

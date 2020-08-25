@@ -6,7 +6,7 @@
  * **IAY**: The only changes here from the generated file have been to clean up the imports
  * list and to add "throws ApiException" to the validate method.
  */
-package uk.org.iay.incommon.validator.api;
+package uk.org.iay.md.validator.api;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import uk.org.iay.incommon.validator.models.Status;
-import uk.org.iay.incommon.validator.models.Validator;
+import uk.org.iay.md.validator.models.Status;
+import uk.org.iay.md.validator.models.Validator;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-05-12T13:33:10.546+01:00")
 
 @Api(value = "validators", description = "the validators API")

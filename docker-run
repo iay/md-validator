@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker run -d --restart=always -p 8080:8080 --name inc-validator \
-    iay/inc-validator
+docker run -d --restart=always -p 8080:8080 --name md-validator \
+    iay/md-validator

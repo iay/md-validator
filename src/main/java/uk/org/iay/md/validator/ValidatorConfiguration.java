@@ -13,7 +13,7 @@
  */
 
 
-package uk.org.iay.incommon.validator;
+package uk.org.iay.md.validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import uk.org.iay.incommon.validator.context.ValidatorCollection;
+import uk.org.iay.md.validator.context.ValidatorCollection;
 
 /**
  * Validator configuration.

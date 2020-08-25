@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package uk.org.iay.incommon.validator.api;
+package uk.org.iay.md.validator.api;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -47,10 +47,10 @@ import net.shibboleth.metadata.pipeline.Pipeline;
 import net.shibboleth.metadata.pipeline.PipelineProcessingException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
-import uk.org.iay.incommon.validator.context.ValidatorCollection;
-import uk.org.iay.incommon.validator.models.Status;
-import uk.org.iay.incommon.validator.models.Status.StatusEnum;
-import uk.org.iay.incommon.validator.models.Validator;
+import uk.org.iay.md.validator.models.Status;
+import uk.org.iay.md.validator.models.Status.StatusEnum;
+import uk.org.iay.md.validator.context.ValidatorCollection;
+import uk.org.iay.md.validator.models.Validator;
 
 /**
  * Controller for the Validators API.
