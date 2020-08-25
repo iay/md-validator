@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -31,6 +32,7 @@ import uk.org.iay.md.validator.context.ValidatorCollection;
  */
 @Configuration
 @ImportResource("root-beans.xml")
+@ComponentScan(basePackages = "io.swagger.configuration")
 public class ValidatorConfiguration {
 
     /** Class logger. */
