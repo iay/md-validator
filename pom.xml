@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.14.RELEASE</version>
+        <groupId>net.shibboleth</groupId>
+        <artifactId>parent</artifactId>
+        <version>11.1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.org.iay.md.validator</groupId>
     <artifactId>md-validator</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -23,19 +23,14 @@
     <inceptionYear>2018</inceptionYear>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spec.location>swagger/swagger.yaml</spec.location>
 
-        <java.version>1.8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <mda.version>0.10.0-SNAPSHOT</mda.version>
+        <java-support.version>8.0.0</java-support.version>
+        <spring-extensions.version>6.0.0</spring-extensions.version>
 
-        <mda.version>0.9.2</mda.version>
-        <java-support.version>7.4.0</java-support.version>
-        <spring-extensions.version>5.3.0</spring-extensions.version>
-
+        <spring.boot.version>2.3.3.RELEASE</spring.boot.version>
         <springfox-version>2.7.0</springfox-version>
-        <jakarta.jaxb.version>2.3.2</jakarta.jaxb.version>
     </properties>
 
     <dependencies>
@@ -115,7 +110,6 @@
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>${jakarta.jaxb.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -167,7 +161,25 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -239,6 +251,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -281,26 +294,6 @@
 
     </build>
 
-    <profiles>
-        <profile>
-            <id>lint</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <showDeprecation>true</showDeprecation>
-                            <showWarnings>true</showWarnings>
-                            <debug>true</debug>
-                            <compilerArgument>-Xlint:unchecked</compilerArgument>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <repositories>
         <repository>
             <id>shib-release</id>
@@ -308,6 +301,13 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>shib-snapshot</id>
+            <url>https://build.shibboleth.net/nexus/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
 

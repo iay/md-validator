@@ -8,7 +8,7 @@
 #
 # Build the .jar file in a build container.
 #
-FROM maven:3.5.3-jdk-8 AS build-jar
+FROM maven:3.5.3-jdk-11 AS build-jar
 MAINTAINER Ian Young <ian@iay.org.uk>
 
 WORKDIR /user
@@ -23,11 +23,11 @@ RUN mvn --batch-mode \
 #
 # Build the deployable image.
 #
-FROM openjdk:8-slim
+FROM amazoncorretto:11
 MAINTAINER Ian Young <ian@iay.org.uk>
 
 WORKDIR /user
 COPY --from=build-jar /user/target/*.jar .
 
 EXPOSE 8080
-CMD ["java", "-jar", "md-validator-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "md-validator-0.1.0-SNAPSHOT.jar"]
