@@ -3,6 +3,7 @@ package uk.org.iay.md.validator.api;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -59,5 +60,21 @@ public class ValidatorsApiControllerTest extends AbstractTestNGSpringContextTest
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(3)))
             .andExpect(jsonPath("$[0].componentId", is("fake_warn")));
+    }
+    
+    @Test
+    public void testSchemaFailure() throws Exception {
+        final var xml = test.readBytes("schema.xml");
+        mockMvc.perform(post("/validators/test/validate")
+                .content(xml)
+                .header(HttpHeaders.CONTENT_TYPE, SAML_METADATA)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].componentId", is("checkSchemas")))
+            .andExpect(jsonPath("$[0].message", startsWith("cvc-complex-type.2.4.a")));
     }
 }

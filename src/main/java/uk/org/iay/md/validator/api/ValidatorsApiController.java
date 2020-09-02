@@ -45,6 +45,7 @@ import net.shibboleth.metadata.dom.DOMElementItem;
 import net.shibboleth.metadata.dom.saml.SAMLMetadataSupport;
 import net.shibboleth.metadata.pipeline.Pipeline;
 import net.shibboleth.metadata.pipeline.PipelineProcessingException;
+import net.shibboleth.metadata.pipeline.TerminationException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import uk.org.iay.md.validator.models.Status;
@@ -151,6 +152,9 @@ public class ValidatorsApiController implements ValidatorsApi {
         final Pipeline<Element> pipeline = entry.getPipeline();
         try {
             pipeline.execute(items);
+        } catch (final TerminationException ex) {
+            // Do nothing, treat the same as if we completed the pipeline.
+            // Processing will fall through to shipping back status metadata.
         } catch (final PipelineProcessingException ex) {
             LOG.info("Pipeline failed: {}", ex.getMessage());
             throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR,
