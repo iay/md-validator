@@ -27,7 +27,7 @@ FROM amazoncorretto:11
 MAINTAINER Ian Young <ian@iay.org.uk>
 
 WORKDIR /user
-COPY --from=build-jar /user/target/*.jar .
+COPY --from=build-jar /user/target/md-validator-0.1.0-SNAPSHOT.jar .
 
 EXPOSE 8080
 CMD ["java", "-jar", "md-validator-0.1.0-SNAPSHOT.jar"]
