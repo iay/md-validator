@@ -47,6 +47,31 @@
 
 
     <!--
+        ***************************************************
+        ***                                             ***
+        ***   V A L I D A T I O N   F R A M E W O R K   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <!--
+        errorTerminator
+
+        This pipeline stage causes CLI termination if any item is marked with an error status.
+    -->
+    <bean id="errorTerminator" parent="mda.ItemMetadataTerminationStage">
+        <!--
+        <property name="identificationStrategy" ref="identificationStrategy"/>
+        -->
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--
         *************************************
         ***                               ***
         ***   D O M   U T I L I T I E S   ***
