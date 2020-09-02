@@ -167,6 +167,27 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Test dependencies -->
+        
+        <dependency>
+            <groupId>net.shibboleth.metadata</groupId>
+            <artifactId>aggregator-pipeline</artifactId>
+            <version>${mda.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
 
     <dependencyManagement>

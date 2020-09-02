@@ -31,7 +31,7 @@ import uk.org.iay.md.validator.context.ValidatorCollection;
  * Validator configuration.
  */
 @Configuration
-@ImportResource("root-beans.xml")
+@ImportResource("classpath:root-beans.xml")
 @ComponentScan(basePackages = "io.swagger.configuration")
 public class ValidatorConfiguration {
 
