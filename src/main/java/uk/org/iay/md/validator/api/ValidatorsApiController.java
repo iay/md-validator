@@ -191,7 +191,7 @@ public class ValidatorsApiController implements ValidatorsApi {
         // Check element name
         if (!SAMLMetadataSupport.isEntityDescriptor(docElement)) {
             throw new ApiException(HttpStatus.BAD_REQUEST,
-                    "document element is not a SAML entity descriptor");
+                    "document element is not a single SAML entity descriptor");
         }
 
         // Check that there is an entityID attribute
