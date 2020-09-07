@@ -162,7 +162,8 @@ public class ValidatorsApiController implements ValidatorsApi {
         }
 
         // Build the response from any resulting statuses
-        final List<StatusMetadata> sts = item.getItemMetadata().get(StatusMetadata.class);
+        final var result = items.get(0);
+        final List<StatusMetadata> sts = result.getItemMetadata().get(StatusMetadata.class);
         final List<Status> statuses = new ArrayList<>();
         for (final StatusMetadata st : sts) {
             statuses.add(convertStatus(st));

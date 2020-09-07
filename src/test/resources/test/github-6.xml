@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
+    <bean class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
+
+    <bean id="id" parent="String" c:_="github-6"/>
+    <bean id="description" parent="String" c:_="Test validator."/>
+
+    <bean id="pipeline" parent="mda.SimplePipeline">
+        <property name="stages">
+            <list>
+                <bean id="fake_warn" parent="mda.XSLValidationStage"
+                    p:XSLResource="classpath:test/test_warn.xsl"/>
+
+                <bean id="identity_transform" parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:test/identity.xsl"/>
+
+                <bean id="fake_info" parent="mda.XSLValidationStage"
+                    p:XSLResource="classpath:test/test_info.xsl"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
