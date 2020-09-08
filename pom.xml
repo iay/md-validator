@@ -266,13 +266,17 @@
             </plugin>
 
             <!--
-                Ask Spring Boot to enhance the resulting .jar so that it is
-                directly executable.
+                Build a directly executable, layered JAR.
             -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
+                <configuration>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
