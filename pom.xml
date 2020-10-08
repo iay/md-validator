@@ -29,7 +29,7 @@
         <java-support.version>8.0.0</java-support.version>
         <spring-extensions.version>6.0.0</spring-extensions.version>
 
-        <spring.boot.version>2.3.3.RELEASE</spring.boot.version>
+        <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
         <springfox-version>2.7.0</springfox-version>
     </properties>
 
@@ -168,7 +168,7 @@
         </dependency>
 
         <!-- Test dependencies -->
-        
+
         <dependency>
             <groupId>net.shibboleth.metadata</groupId>
             <artifactId>aggregator-pipeline</artifactId>
@@ -176,7 +176,7 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -187,7 +187,7 @@
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
     </dependencies>
 
     <dependencyManagement>
