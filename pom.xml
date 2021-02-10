@@ -29,7 +29,7 @@
         <java-support.version>8.0.0</java-support.version>
         <spring-extensions.version>6.0.0</spring-extensions.version>
 
-        <spring.boot.version>2.4.0</spring.boot.version>
+        <spring.boot.version>2.4.2</spring.boot.version>
         <springfox-version>2.7.0</springfox-version>
     </properties>
 
@@ -127,6 +127,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+
 
         <!-- Runtime dependencies -->
 
@@ -178,8 +183,24 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test-autoconfigure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
