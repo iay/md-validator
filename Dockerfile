@@ -6,9 +6,10 @@
 #
 
 #
-# Build the .jar file in a build container.
+# Build the .jar file in a build container. Run this under the build platform
+# even if we're generating an image for an emulated target platform.
 #
-FROM maven:3.5.3-jdk-11 AS builder
+FROM --platform=$BUILDPLATFORM maven:3.5.3-jdk-11 AS builder
 MAINTAINER Ian Young <ian@iay.org.uk>
 
 WORKDIR /application
