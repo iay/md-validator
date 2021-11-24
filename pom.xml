@@ -116,10 +116,6 @@
             <artifactId>validation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
         </dependency>
@@ -139,12 +135,6 @@
             <groupId>net.shibboleth.ext</groupId>
             <artifactId>spring-extensions</artifactId>
             <version>${spring-extensions.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-joda</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -278,8 +268,7 @@
                             <configHelp>false</configHelp>
 
                             <configOptions>
-                                <!-- date/time compatibility with MDA 0.9.x -->
-                                <dateLibrary>joda</dateLibrary>
+                                <dateLibrary>java8</dateLibrary>
                             </configOptions>
                         </configuration>
                     </execution>

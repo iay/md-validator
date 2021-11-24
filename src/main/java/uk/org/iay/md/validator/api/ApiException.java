@@ -14,10 +14,10 @@
 
 package uk.org.iay.md.validator.api;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.joda.time.DateTime;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -32,7 +32,7 @@ public class ApiException extends Exception {
     private final HttpStatus status;
 
     /** When the exception was created. */
-    private final DateTime when;
+    private final Instant when;
 
     /**
      * Constructor.
@@ -43,7 +43,7 @@ public class ApiException extends Exception {
     public ApiException(final HttpStatus stat, final String msg) {
         super(msg);
         status = stat;
-        when = DateTime.now();
+        when = Instant.now();
     }
 
     /**
@@ -56,7 +56,7 @@ public class ApiException extends Exception {
     public ApiException(final HttpStatus stat, final String msg, final Throwable cause) {
         super(msg, cause);
         status = stat;
-        when = DateTime.now();
+        when = Instant.now();
     }
 
     /**
