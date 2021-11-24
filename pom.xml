@@ -30,7 +30,7 @@
         <spring-extensions.version>6.0.0</spring-extensions.version>
 
         <spring.boot.version>2.4.2</spring.boot.version>
-        <springfox-version>2.7.0</springfox-version>
+        <springfox-version>2.9.2</springfox-version>
     </properties>
 
     <dependencies>
