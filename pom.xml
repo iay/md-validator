@@ -23,7 +23,7 @@
     <inceptionYear>2018</inceptionYear>
 
     <properties>
-        <spec.location>swagger/swagger.yaml</spec.location>
+        <spec.location>${project.basedir}/swagger/swagger.yaml</spec.location>
 
         <mda.version>0.10.0-SNAPSHOT</mda.version>
         <java-support.version>8.2.1</java-support.version>
