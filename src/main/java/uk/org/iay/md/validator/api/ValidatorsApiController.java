@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import io.swagger.annotations.ApiParam;
 import net.shibboleth.metadata.ErrorStatus;
 import net.shibboleth.metadata.InfoStatus;
 import net.shibboleth.metadata.Item;
@@ -118,11 +117,8 @@ public class ValidatorsApiController implements ValidatorsApi {
 
     @Override
     public ResponseEntity<List<Status>> validate(
-            @ApiParam(value = "An identifier for the validation to be performed.", required = true)
-                @PathVariable("validator_id")
-                final String validatorId,
-            @ApiParam(value = "The metadata to be validated.", required = true) @Valid @RequestBody
-                final String metadata) throws ApiException {
+                @PathVariable("validator_id") final String validatorId,
+                @Valid @RequestBody final String metadata) {
 
         // Fetch the required validator.
         final ValidatorCollection.Entry entry = validatorCollection.getEntry(validatorId);

@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Exception class for use within the API.
  */
-public class ApiException extends Exception {
+public class ApiException extends RuntimeException {
 
     /** Serial version UID. */
     private static final long serialVersionUID = -5046975083822313941L;
