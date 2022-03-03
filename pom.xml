@@ -30,7 +30,7 @@
         <spring-extensions.version>6.1.3</spring-extensions.version>
 
         <spring.boot.version>2.4.13</spring.boot.version>
-        <springdoc.version>1.6.5</springdoc.version>
+        <springdoc.version>1.6.6</springdoc.version>
     </properties>
 
     <dependencies>
