@@ -29,7 +29,7 @@
         <java-support.version>8.2.1</java-support.version>
         <spring-extensions.version>6.1.3</spring-extensions.version>
 
-        <spring.boot.version>2.6.5</spring.boot.version>
+        <spring.boot.version>2.6.6</spring.boot.version>
         <springdoc.version>1.6.6</springdoc.version>
     </properties>
 
