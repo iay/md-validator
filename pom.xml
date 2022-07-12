@@ -6,7 +6,7 @@
     <parent>
         <groupId>net.shibboleth</groupId>
         <artifactId>parent</artifactId>
-        <version>11.3.2</version>
+        <version>11.3.3</version>
     </parent>
 
     <groupId>uk.org.iay.md.validator</groupId>
@@ -29,7 +29,7 @@
         <java-support.version>8.3.1</java-support.version>
         <spring-extensions.version>6.2.0</spring-extensions.version>
 
-        <spring.boot.version>2.6.7</spring.boot.version>
+        <spring.boot.version>2.7.1</spring.boot.version>
         <springdoc.version>1.6.7</springdoc.version>
     </properties>
 
