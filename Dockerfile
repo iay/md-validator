@@ -9,8 +9,9 @@
 # Build the .jar file in a build container. Run this under the build platform
 # even if we're generating an image for an emulated target platform.
 #
-FROM --platform=$BUILDPLATFORM maven:3.8.4-jdk-11 AS builder
-MAINTAINER Ian Young <ian@iay.org.uk>
+FROM --platform=$BUILDPLATFORM maven:3.8.5-openjdk-17 AS builder
+
+LABEL maintainer="Ian Young <ian@iay.org.uk>"
 
 WORKDIR /application
 COPY pom.xml ./
@@ -31,8 +32,9 @@ RUN java -Djarmode=layertools \
 #
 # Build the deployable image.
 #
-FROM amazoncorretto:11
-MAINTAINER Ian Young <ian@iay.org.uk>
+FROM amazoncorretto:17
+
+LABEL maintainer="Ian Young <ian@iay.org.uk>"
 
 #
 # Copy the layers extracted from the JAR.
