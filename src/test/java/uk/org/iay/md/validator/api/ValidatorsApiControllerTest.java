@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +39,22 @@ public class ValidatorsApiControllerTest extends AbstractTestNGSpringContextTest
 
     private final static MediaType SAML_METADATA = new MediaType("application", "xml+samlmetadata");
 
+    /**
+     * Read a classpath resource as an array of <code>byte</code>s.
+     *
+     * @param resourcePath classpath path to the resource
+     *
+     * @return the resource as an array of <code>byte</code>s
+     *
+     * @throws IOException on error
+     */
+    private byte[] readBytes(final String resourcePath) throws IOException {
+        final var res = test.getClasspathResource(resourcePath);
+        try (var stream = res.getInputStream()) {
+            return stream.readAllBytes();
+        }
+    }
+
     @Test
     public void testValidators() throws Exception {
         mockMvc.perform(get("/validators"))
@@ -52,7 +70,7 @@ public class ValidatorsApiControllerTest extends AbstractTestNGSpringContextTest
 
     @Test
     public void testTestValidation() throws Exception {
-        final var xml = test.readBytes("valid.xml");
+        final var xml = readBytes("valid.xml");
         mockMvc.perform(post("/validators/test/validate")
                 .content(xml)
                 .header(HttpHeaders.CONTENT_TYPE, SAML_METADATA)
@@ -67,7 +85,7 @@ public class ValidatorsApiControllerTest extends AbstractTestNGSpringContextTest
     
     @Test
     public void testSchemaFailure() throws Exception {
-        final var xml = test.readBytes("schema.xml");
+        final var xml = readBytes("schema.xml");
         mockMvc.perform(post("/validators/test/validate")
                 .content(xml)
                 .header(HttpHeaders.CONTENT_TYPE, SAML_METADATA)
@@ -83,7 +101,7 @@ public class ValidatorsApiControllerTest extends AbstractTestNGSpringContextTest
     
     @Test
     public void testGitHub6() throws Exception {
-        final var xml = test.readBytes("valid.xml");
+        final var xml = readBytes("valid.xml");
         mockMvc.perform(post("/validators/github-6/validate")
                 .content(xml)
                 .header(HttpHeaders.CONTENT_TYPE, SAML_METADATA)

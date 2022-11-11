@@ -5,7 +5,6 @@
 # Note that I use `ianayoung` on Docker Hub.
 #
 docker buildx build \
-    --tag iay/md-validator:latest \
-    --tag iay/md-validator:0.10 \
+    --tag iay/md-validator:0.9 \
     --output=type=docker \
     .
