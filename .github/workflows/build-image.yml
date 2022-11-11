@@ -48,4 +48,6 @@ jobs:
         run: |
           docker buildx build --platform=linux/amd64,linux/arm64 \
             --push \
-            --tag ${{ secrets.DOCKERHUB_USERNAME }}/md-validator:latest .
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/md-validator:latest \
+            --tag ${{ secrets.DOCKERHUB_USERNAME }}/md-validator:0.10 \
+            .
