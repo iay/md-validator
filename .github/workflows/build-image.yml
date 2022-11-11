@@ -9,7 +9,7 @@ name: build-image
 on:
   push:
     branches:
-      - main
+      - "0.9"
   workflow_dispatch:
 
 jobs:
