@@ -1,3 +1,11 @@
 #!/bin/bash
-
-docker build -t iay/md-validator .
+#
+# Build the image into the local image list under the iay namespace.
+#
+# Note that I use `ianayoung` on Docker Hub.
+#
+docker buildx build \
+    --tag iay/md-validator:latest \
+    --tag iay/md-validator:0.10 \
+    --output=type=docker \
+    .
