@@ -31,7 +31,7 @@
         <spring-extensions.version>6.2.0</spring-extensions.version>
 
         <spring.boot.version>2.7.5</spring.boot.version>
-        <springdoc.version>1.6.12</springdoc.version>
+        <springdoc.version>1.6.13</springdoc.version>
 
         <!-- Override parent POM settings for compatibility. -->
         <maven.compiler.release>17</maven.compiler.release>
