@@ -252,9 +252,6 @@
                             <invokerPackage>uk.org.iay.md.validator</invokerPackage>
                             <modelPackage>uk.org.iay.md.validator.models</modelPackage>
                             <apiPackage>uk.org.iay.md.validator.api</apiPackage>
-                            <interfaceOnly>false</interfaceOnly>
-                            <useOptional>true</useOptional>
-                            <delegatePattern>true</delegatePattern>
 
                             <!-- Set the following true if (when) you forget the options. -->
                             <configHelp>false</configHelp>
