@@ -22,7 +22,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testng.annotations.Test;
 
-import net.shibboleth.metadata.BaseTest;
+import net.shibboleth.metadata.testing.BaseTest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
