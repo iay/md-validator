@@ -30,7 +30,7 @@
         <shib-shared.version>9.0.0-SNAPSHOT</shib-shared.version>
 
         <spring.boot.version>3.0.7</spring.boot.version>
-        <springdoc.version>1.6.14</springdoc.version>
+        <springdoc.version>1.7.0</springdoc.version>
     </properties>
 
     <dependencies>
