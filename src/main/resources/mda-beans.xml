@@ -330,5 +330,15 @@
 
     <bean id="mda.X509RSAOpenSSLBlacklistValidator" abstract="true" parent="mda.validator_parent"
         class="net.shibboleth.metadata.validate.x509.X509RSAOpenSSLBlacklistValidator"/>
+    <!--
+        ***********************************************************
+        ***                                                     ***
+        ***   O U T - O F - M O D U L E   C O M P O N E N T S   ***
+        ***                                                     ***
+        ***********************************************************
+    -->
+
+    <bean id="mda.IdentifiableBeanPostProcessor" abstract="true"
+        class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor"/>
 
 </beans>
