@@ -56,17 +56,9 @@ functional. I'm sure this will all resolve in a couple of years, but for now
 here's a summary of the current choices.
 
 This project makes use of the Swagger code generator. The current templates used by
-that system assume the `javax` rather than `jakarta` namespaces for Java EE APIs
-and we therefore use the Shibboleth Java 11 platform parent POM rather than the
-Shibboleth java 17 platform parent POM even though the MDA we are using references
-the latter. However, this project both explicitly compiles with Java 17 and targets
-Java 17 as an execution environment.
-
-The tests for this project make use of some of Spring Boot's 2's testing infrastructure.
-That explicitly references an SLF4J implementation class which no longer exists in the
-latest versions; this code therefore overrides the Shibboleth parent POM's logging
-system versioning in order to make use of the older version which is compatible with
-Spring Boot 2.
+that system assume the `javax` rather than `jakarta` namespaces for Java EE APIs.
+To interface this with the Shibboleth Java 17 platform, `maven-replacer-plugin`
+is used to rewrite references to the correct namespace.
 
 ## Copyright and License
 
