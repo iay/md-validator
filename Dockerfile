@@ -59,3 +59,5 @@ COPY --from=builder application/application/ ./
 EXPOSE 8080
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+
+HEALTHCHECK CMD ["/usr/bin/curl", "--silent", "http://localhost:8080/actuator/health"]
