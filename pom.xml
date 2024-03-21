@@ -29,7 +29,7 @@
         <shib-shared.groupId>net.shibboleth</shib-shared.groupId>
         <shib-shared.version>9.0.0</shib-shared.version>
 
-        <spring.boot.version>3.1.1</spring.boot.version>
+        <spring.boot.version>3.1.10</spring.boot.version>
         <springdoc.version>2.3.0</springdoc.version>
     </properties>
 
