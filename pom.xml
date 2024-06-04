@@ -27,8 +27,13 @@
 
         <mda.version>0.9.2</mda.version>
         <mda.artifactId>aggregator-pipeline</mda.artifactId>
-        <java-support.version>8.3.1</java-support.version>
-        <spring-extensions.version>6.2.0</spring-extensions.version>
+
+        <!--
+            These dependencies are the versions contemporary with the
+            MDA 0.9.2 release, and are shipped alongside it.
+        -->
+        <java-support.version>7.2.0</java-support.version>
+        <spring-extensions.version>5.2.0</spring-extensions.version>
 
         <spring.boot.version>2.7.12</spring.boot.version>
         <springdoc.version>1.7.0</springdoc.version>
