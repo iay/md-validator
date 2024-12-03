@@ -32,7 +32,7 @@ RUN java -Djarmode=layertools \
 #
 # Build the deployable image.
 #
-FROM amazoncorretto:17 as deploy
+FROM amazoncorretto:17 AS deploy
 
 LABEL maintainer="Ian Young <ian@iay.org.uk>"
 
