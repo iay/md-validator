@@ -33,7 +33,7 @@
         <springdoc.version>2.6.0</springdoc.version>
 
         <!-- Override logback version from Shibboleth parent. -->
-        <logback.version>1.5.6</logback.version>
+        <logback.version>1.5.12</logback.version>
     </properties>
 
     <dependencies>
